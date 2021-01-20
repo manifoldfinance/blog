@@ -4,9 +4,16 @@ Makers
 
 Definition of a CFMM. A constant function market maker, or CFMM, 
 is a type of automated market maker defined by its trading function,
-\(\varphi: R _{+}^{n} \times R _{+}^{n} \times R _{+}^{n} \rightarrow R ,\) 
+<!-- LaTeX Image Link Created via https://sambacha.github.io/github-flavoured-latex/ x -->
+<img src="https://render.githubusercontent.com/render/math?math=%5Cbegin%7Balign%7D%0A%5Cvarphi%3A%20R%20_%7B%2B%7D%5E%7Bn%7D%20%5Ctimes%20R%20_%7B%2B%7D%5E%7Bn%7D%20%5Ctimes%20R%20_%7B%2B%7D%5E%7Bn%7D%20%5Crightarrow%20R%0A%5Cend%7Balign%7D">
 
-and its reserves, 
+<!-- LaTeX
+\begin{align}
+\varphi: R _{+}^{n} \times R _{+}^{n} \times R _{+}^{n} \rightarrow R
+\end{align}
+-->
+
+Here, \(R_{i}\) specifies how much of coin \(i\) the CFMM is allowed to use or interact with, while the trading function specifies what constitutes a valid trade.
 
 \(R \in R _{+}^{n}\). Here, \(R_{i}\) 
 
