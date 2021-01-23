@@ -3,39 +3,38 @@ Andrew, Warner, Nathan
 
 Notes go here
 
-* can contracts forge messages to make them look like they came from keys? and
-vice versa? probably not, contract-ids are hash outputs. miners can also
-distinguish between externally-delivered (signed) messages and
-internally-generated (from-contract) messages.
-* contracts which use input parameters (argument values) directly as memory
-keys, or sender-keys as memory keys, might allow collisions (like
-memory-corruption/buffer-overflow attacks).
+- can contracts forge messages to make them look like they came from keys? and
+  vice versa? probably not, contract-ids are hash outputs. miners can also
+  distinguish between externally-delivered (signed) messages and
+  internally-generated (from-contract) messages.
+- contracts which use input parameters (argument values) directly as memory
+  keys, or sender-keys as memory keys, might allow collisions (like
+  memory-corruption/buffer-overflow attacks).
 
-  * what is the memory model for persistent storage? integer-offset? key-value
-pairs? is that a Serpent feature that compiles down? if serpent does the
-utility/hash function incorrectly, this would admit an attack. e.g.
-first-come/first-served name assignment contract, tracks one data structure with
-user-assigned names, a second for internal use, they might collide. Find a
-contract in the wild that behaves this way, analyze it.
- 
- 
+  - what is the memory model for persistent storage? integer-offset? key-value
+    pairs? is that a Serpent feature that compiles down? if serpent does the
+    utility/hash function incorrectly, this would admit an attack. e.g.
+    first-come/first-served name assignment contract, tracks one data structure with
+    user-assigned names, a second for internal use, they might collide. Find a
+    contract in the wild that behaves this way, analyze it.
+
 ## goals for 02-Feb-2015
 
-* be comfortable with compiling both go- and cpp-ethereum
-* have all ethereum unit tests working and understood
-* ethtest working and understood
+- be comfortable with compiling both go- and cpp-ethereum
+- have all ethereum unit tests working and understood
+- ethtest working and understood
 
 ## goals for 09-Feb-2015
 
-* write a new test case for ethtest, have it work
-* understand testing with pythereum
-* understand higher-level contract languages and compilers: Serpent? Solidity?
-* understand ecosystem: which languages (high and low) are in use, how mature
-are they, which UI projects are active (mist, in go? web-browser in cpp-client?)
+- write a new test case for ethtest, have it work
+- understand testing with pythereum
+- understand higher-level contract languages and compilers: Serpent? Solidity?
+- understand ecosystem: which languages (high and low) are in use, how mature
+  are they, which UI projects are active (mist, in go? web-browser in cpp-client?)
 
 ## Brainstorm thoughts from 2015-02-02
 
-Is ``currentcoinBase`` a parameter available to scripts? Can they distinguish
+Is `currentcoinBase` a parameter available to scripts? Can they distinguish
 which coinbase (or miner) is currently attempting to verify the script?
 
 Scenario: a miner colludes with a contract author, and the contract provides
@@ -43,7 +42,7 @@ some useful service that has many users/transactions, and the general public
 doesn't inspect the code for sneakiness, then: the miner can decide whether or
 not to insert a special coinbase in order to hit an infinite loop, preventing
 any state transition within the contract, but receiving all of the gas from the
-sender.  The miner need not actually execute the loop, thereby receiving the
+sender. The miner need not actually execute the loop, thereby receiving the
 gas.
 
 Potential DOS: what if a malicious miner doesn't need to evaluate a very high
@@ -57,7 +56,6 @@ This is one particular way for clients to pay miners "under the table" (they
 could also just send them cash, completely outside the system) for preferential
 treatment. Miners can be bribed by either giving them more money, or letting
 their operations be cheaper.
-
 
 ### Mining Economics
 
@@ -86,7 +84,7 @@ The runtime is unknowable in advance. The Halting Problem tells us that we can't
 hope to determine the runtime of an arbitrary program (in a Turing-complete
 language) without actually running it. However, the gas system provides an
 escape clause: if the program takes too long, the miner is allowed to give up
-and *keep the gas*. This gives an incentive to clients to set accurate gas
+and _keep the gas_. This gives an incentive to clients to set accurate gas
 limits.
 
 In practice, the likely outcomes look more like these:
@@ -135,9 +133,9 @@ updated ancestors. This is maximally predictable, but imposes constraints on the
 transactions and the state which they modify, because otherwise it may be hard
 to keep up. A transaction that says "Alice's balance changes from $25 to $75"
 cannot be composed with "$25->26" to give Alice $76: the second sender loses and
-must write a new one that says "$75->76".
+must write a new one that says "\$75->76".
 
-Ethereum allows transactions like "Alice += $50", whose results depend upon the
+Ethereum allows transactions like "Alice += \$50", whose results depend upon the
 order in which the transactions are applied. This establishes a spectrum, with
 one end where transactions are maximally predictable, and the other in which
 they're more likely to complete. This is closely related to the CAP theorem
@@ -164,7 +162,7 @@ would need to follow the state of the entire dataset carefully (to make accurate
 predictions), or tolerate frequent reject/retry cycles, or perform complex
 analysis to determine which parts of the state might affect their transactions
 and which can be ignored. Ethereum's current design only requires senders to
-remember their own nonce and balance, so basic value transfers ("send $50 to
+remember their own nonce and balance, so basic value transfers ("send \$50 to
 Alice") don't require careful coordination. Gas limits are an an intermediate
 solution.
 
@@ -181,9 +179,9 @@ separate the two.
 Ideally, clients would give the following data/claims to miners for each
 transaction:
 
-* if you publish an EOUTOFGAS proof for this txn, you will get A (ETH)
-* if you publish a sucessful run for this txn, you will get B ETH
-* I claim it will cost you C ($/CPU/etc) to run this program
+- if you publish an EOUTOFGAS proof for this txn, you will get A (ETH)
+- if you publish a sucessful run for this txn, you will get B ETH
+- I claim it will cost you C (\$/CPU/etc) to run this program
 
 From the client's point of view, "A" is their bet
 
@@ -259,19 +257,19 @@ refund for freeing it. You store "0" in a slot to free it (contract storage is
 sparse). This isn't a good match for the computation costs to manage this
 storage: the cost of locating the right node (to determine if the cell is
 present or absent) is independent of the non-CPU cost to retain that data for
-the future. We'd prefer a more direct bytes*seconds cost metric, although that
+the future. We'd prefer a more direct bytes\*seconds cost metric, although that
 might be impractical for other reasons (like how to manage maintenance costs).
 
 Proof-Of-Work: we skimmed https://github.com/ethereum/wiki/wiki/Ethash . We
 haven't studied it in detail yet, but so far we're concerned about:
 
-* the number/variety/complexity of functions involved
-* suggestions that parameters will be tuned based upon a Javascript
-implementation, rather than the most-likely-efficient GPU version
-* lack of clarity about target platform: both Javscript *and* GPUs?
-* 32MB is still a lot for JS.
-* we like the Cuckoo (random-graph-cycle) hasher, I wouldn't mind seeing it here
-instead
+- the number/variety/complexity of functions involved
+- suggestions that parameters will be tuned based upon a Javascript
+  implementation, rather than the most-likely-efficient GPU version
+- lack of clarity about target platform: both Javscript _and_ GPUs?
+- 32MB is still a lot for JS.
+- we like the Cuckoo (random-graph-cycle) hasher, I wouldn't mind seeing it here
+  instead
 
 ## Notes from 04-Feb-2015
 
@@ -301,11 +299,11 @@ work with, so miners won't prioritize, they'll just want to avoid unprofitable
 txns. At higher volumes, one of the following constraints or costs will start to
 matter:
 
-* block size limit (in bytes)
-* per-block gasLimit
-* time to send the block over the network
-* time for other miners to verify the block
-* CPU time spent verifying (competing with mining, or costing $)
+- block size limit (in bytes)
+- per-block gasLimit
+- time to send the block over the network
+- time for other miners to verify the block
+- CPU time spent verifying (competing with mining, or costing \$)
 
 The miner must choose which txns to evaluate at all, based on expectations of
 CPU cost and gas reward. They may have some clever static-analysis that allows
@@ -349,10 +347,10 @@ transactions and commit to exactly the amount of gas they will use. Txns which
 use any more (or less!) would forfeit their gas. This would collapse the
 reward/cost diagram to a small number of mostly-profitable:
 
-* evaluate the txn and it uses the claimed gas: full reward, full cost
-* evaluate the txn and it uses less: full reward, reduced cost
-* evaluate the txn and it uses one cycle too many: full reward, full cost
-* reject the txn: no reward, minimal cost
+- evaluate the txn and it uses the claimed gas: full reward, full cost
+- evaluate the txn and it uses less: full reward, reduced cost
+- evaluate the txn and it uses one cycle too many: full reward, full cost
+- reject the txn: no reward, minimal cost
 
 If the correct-gas case would be profitable, the miner evaluates the txn and
 gets the full reward. They might make even more profit than expected if the
@@ -415,7 +413,6 @@ the fact that contracts can't pay for their own execution is a big limitation,
 and maybe a big safety belt. it's like a mechanical machine where all the motion
 must derive from the human (key-based account) pushing the lever, no springs or
 use of stored energy allowed. Not self-sustaining, no lasers.
-
 
 ## 09-Feb-2015
 
@@ -530,7 +527,7 @@ Raw notes:
 contract1:
 def check():
     return self.storage[0]
-    
+
 def finicky():
     // This function expects to be called with a high amount of gas, more than
 it will typically use
@@ -546,13 +543,13 @@ def conservative():
     // This spends a MINIMUM of 50 "REAL steps" (due to loop optimization)
     // and a MAXIMUM of 100 "REAL steps"
     // It consumes a minimum of 500 gas and a maximum of 1000 gas.
-    // Thus it's profitable if the gasprice is 0.1x the market rate. 
+    // Thus it's profitable if the gasprice is 0.1x the market rate.
     // The user has to send an up-front gas of 10000 of gas in order to placate
-the 
+the
     // "finicky" contract, even though only 1000 gas will be spent. (The capital
-cost 
-    // of this is mitigated by the 0.1x gas price). 
-    
+cost
+    // of this is mitigated by the 0.1x gas price).
+
     // Assume this is called with 10000+1000 gas.
     initial = tx.gas
     a = contract1.check()
@@ -571,7 +568,6 @@ contract crashy:
     def burn():
         invalid()
 ```
-
 
 ## Vitalik's current concerns:
 

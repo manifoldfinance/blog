@@ -1,9 +1,10 @@
-
 ## Improved Price Oracles: Constant Function Market
+
 Makers
 
-Definition of a CFMM. A constant function market maker, or CFMM, 
+Definition of a CFMM. A constant function market maker, or CFMM,
 is a type of automated market maker defined by its trading function,
+
 <!-- LaTeX Image Link Created via https://sambacha.github.io/github-flavoured-latex/ x -->
 <img src="https://render.githubusercontent.com/render/math?math=%5Cbegin%7Balign%7D%0A%5Cvarphi%3A%20R%20_%7B%2B%7D%5E%7Bn%7D%20%5Ctimes%20R%20_%7B%2B%7D%5E%7Bn%7D%20%5Ctimes%20R%20_%7B%2B%7D%5E%7Bn%7D%20%5Crightarrow%20R%0A%5Cend%7Balign%7D">
 
@@ -13,11 +14,11 @@ is a type of automated market maker defined by its trading function,
 \end{align}
 -->
 
-Here, \(R_{i}\) specifies how much of coin \(i\) the CFMM is allowed to use or interact with, while the trading function specifies what constitutes a valid trade.
+Here, \(R\_{i}\) specifies how much of coin \(i\) the CFMM is allowed to use or interact with, while the trading function specifies what constitutes a valid trade.
 
-\(R \in R _{+}^{n}\). Here, \(R_{i}\) 
+\(R \in R _{+}^{n}\). Here, \(R_{i}\)
 
-specifies how much of coin \(i\) the CFMM is allowed to use or interact with, 
+specifies how much of coin \(i\) the CFMM is allowed to use or interact with,
 while the trading function specifies what constitutes a valid trade.
 
 ### Optimization over possible CFMMs
@@ -39,9 +40,9 @@ One such question is:
 what is a natural generalization of the reachable set when the trading function (or, equiva-
 lently, the reachable set) is also time-dependent? A simple (but likely woefully incomplete)
 answer is that, if the reachable set depends on time, say St(R), where t ≥ 0 is a time variable,
-we additionally have 
+we additionally have
 
-St′(R) ⊆ St(R) for all R and t′ ≥ t. 
+St′(R) ⊆ St(R) for all R and t′ ≥ t.
 
 This retains some of the given
 

@@ -1,0 +1,7 @@
+*.md     text
+*.yml    text
+.gitattributes text
+*.sh     eol=lf
+*.png diff=exif
+*.jpg diff=exif
+*.svg diff=exif

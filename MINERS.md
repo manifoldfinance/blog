@@ -2,21 +2,21 @@
 
 #### Table of Contents
 
-* [Introduction and Executive Summary](#intro)
-* Part 1: Goals and Incentives
+- [Introduction and Executive Summary](#intro)
+- Part 1: Goals and Incentives
 
-  * [What the Network Wants](#network)
-  * [What Miners Want](#miners)
-  * [What Clients Want](#clients)
-  * [Reconciling Goals](#reconciling)
+  - [What the Network Wants](#network)
+  - [What Miners Want](#miners)
+  - [What Clients Want](#clients)
+  - [Reconciling Goals](#reconciling)
 
-* Part 2: Transaction Execution and Contract Composition
+- Part 2: Transaction Execution and Contract Composition
 
-  * [Overview of Transaction Execution Model](#execution)
-  * [Hazards of Composing Contracts](#hazards)
-  * [Missing Features](#missing)
+  - [Overview of Transaction Execution Model](#execution)
+  - [Hazards of Composing Contracts](#hazards)
+  - [Missing Features](#missing)
 
-## <a name="intro"></a>   Introduction and Executive Summary
+## <a name="intro"></a> Introduction and Executive Summary
 
 Ethereum supports computationally-rich contracts, written in a Turing-complete
 language. This enables a previously-unavailable variety of self-enforcing "smart
@@ -43,23 +43,23 @@ cooperating/competing program authors.
 
 _Executive Summary:_
 
-* Ethereum's "gas" system *is* likely to meet its primary goals: enabling
-complex transactions while mitigating certain Denial-of-Service attacks.
-* Changes will be needed in the future, when the system grows and gas fees
-replace block rewards as the primary income for miners.
-* Contracts *can* be composed, but safe cooperation between mutually-distrusting
-parties will require careful study and rigorous defensive programming. Some
-changes to the virtual machine could be made to improve the safety of these
-compositions, and higher-level analysis tools must be developed. The programming
-examples included in serpent and found in the wild are flawed and inadequate for
-demonstrating best practices.
-* The rule that "value remains with the recipient upon exception" is
-particularly surprising and difficult to work around. We highly recommend
-changing this to "value reverts to the sender upon exception".
+- Ethereum's "gas" system _is_ likely to meet its primary goals: enabling
+  complex transactions while mitigating certain Denial-of-Service attacks.
+- Changes will be needed in the future, when the system grows and gas fees
+  replace block rewards as the primary income for miners.
+- Contracts _can_ be composed, but safe cooperation between mutually-distrusting
+  parties will require careful study and rigorous defensive programming. Some
+  changes to the virtual machine could be made to improve the safety of these
+  compositions, and higher-level analysis tools must be developed. The programming
+  examples included in serpent and found in the wild are flawed and inadequate for
+  demonstrating best practices.
+- The rule that "value remains with the recipient upon exception" is
+  particularly surprising and difficult to work around. We highly recommend
+  changing this to "value reverts to the sender upon exception".
 
 ## Part 1: Goals and Incentives
 
-## <a name="network"></a>   What the Network Wants
+## <a name="network"></a> What the Network Wants
 
 _Summary: Incentivized mining, client confidence, a rich ecosystem._
 
@@ -82,7 +82,7 @@ takes significant computational resources, for which miners expect to be
 compensated. The system needs consensus; consensus depends upon miners: thus the
 system needs a way to incentivize mining.
 
-## <a name="miners"></a>   What Miners Want
+## <a name="miners"></a> What Miners Want
 
 _Summary: Predictable costs and income, profit optimization, DoS protection._
 
@@ -139,18 +139,18 @@ in close proportion to their mining power.
 The cost of verifying blocks is one constraint on the mining process. There are
 others:
 
-* Blocks which are too large will take a longer time to store, transmit, and
-process. If two miners find and publish blocks at roughly the same time, then
-the large block may lose the race to a smaller block that finishes the
-verification process earlier, encouraging miners to produce smaller blocks.
-* To protect the rest of the system (e.g., to prevent denial of service attacks
-on verifiers and light clients), blocks are limited both by size (in bytes) and
-their computational requirements (in gas). The per-block `gasLimit` is
-dynamically adjusted as a moving average: see
-[misc/RaisingGasLimit.md](misc/RaisingGasLimit.md) for more notes and attacks.
-* Miners may have vested interests in particular contract state outcomes, for
-example if a contract makes payments to miners in certain conditions, or if a
-particular miner profits from a particular contract's behavior.
+- Blocks which are too large will take a longer time to store, transmit, and
+  process. If two miners find and publish blocks at roughly the same time, then
+  the large block may lose the race to a smaller block that finishes the
+  verification process earlier, encouraging miners to produce smaller blocks.
+- To protect the rest of the system (e.g., to prevent denial of service attacks
+  on verifiers and light clients), blocks are limited both by size (in bytes) and
+  their computational requirements (in gas). The per-block `gasLimit` is
+  dynamically adjusted as a moving average: see
+  [misc/RaisingGasLimit.md](misc/RaisingGasLimit.md) for more notes and attacks.
+- Miners may have vested interests in particular contract state outcomes, for
+  example if a contract makes payments to miners in certain conditions, or if a
+  particular miner profits from a particular contract's behavior.
 
 These constraints may encourage miners to be selective, to not include all
 potential messages in their blocks, or to alter the order of messages when
@@ -198,8 +198,8 @@ miners to predict their per-message income_
 ### Loose Bounds of the Current Gas-Limit System
 
 The existing mechanisms offers an upper bound on the computational costs, but no
-lower bound. These same mechanisms offer an *upper* bound on the gas income, but
-no complexity-dependent *lower* bound. The result is useful for discouraging
+lower bound. These same mechanisms offer an _upper_ bound on the gas income, but
+no complexity-dependent _lower_ bound. The result is useful for discouraging
 denial-of-service attacks, but does not give miners the information that they
 want to maximize their profits.
 
@@ -237,7 +237,7 @@ result in profitable transactions. Miners can simply ignore messages with
 
 ![mining profit diagram](./images/mining-profit-4.png)
 
-This, however, does not give miners information about how *much* profit they
+This, however, does not give miners information about how _much_ profit they
 might make, so they cannot meaningly prioritize transactions. `gas_price` is
 likely to serve as a proxy for the early days of mining: txns which offer a
 higher `gas_price` are more likely to yield a larger profit.
@@ -265,7 +265,7 @@ that forces an exception, the miner would prefer exception-causing sequences
 over ones that complete normally. Likewise, a sequence that causes execution to
 consume more gas will yield more income than one which completes quickly (and
 more profit, assuming the actual CPU costs are low). So, more sophisticated
-miners may do more work: computing an optimal *ordered subset*, not merely an
+miners may do more work: computing an optimal _ordered subset_, not merely an
 optimal subset.
 
 The costs of doing this analysis must not exceed the gains to be had. Finding an
@@ -299,7 +299,7 @@ low CPU usage. Likewise, overpriced opcodes may yield more overall profit.
 
 Storage costs are particularly difficult to measure with the same units one uses
 for computation. Contract storage operations (`G_sset`) obligates the miner, and
-all verifiers, to store a word of data *forever*. There is a kind of refund
+all verifiers, to store a word of data _forever_. There is a kind of refund
 mechanism that provides a weak incentive to free storage (`R_sclear`), but it is
 local to a single message, and is unlikely to effective in prompting contract
 authors to conserve storage space.
@@ -369,7 +369,6 @@ _Recommendation: consider lazy non-verifying "miners" and make sure they do not
 have a signifcant performance advantage over real ones. Messages with sufficient
 gas income will help._
 
-
 ### Constraints, and the Lack Thereof
 
 Until block-size or block-gas limits are hit, gas is mostly a tool to prevent
@@ -381,7 +380,7 @@ _Observation: we may not really understand the potential attacks or
 misincentives until the system grows enough to impose significant constraints on
 miners._
 
-## <a name="clients"></a>   What Clients Want
+## <a name="clients"></a> What Clients Want
 
 _Summary: Predictable results, reliable execution, minimized cost risk._
 
@@ -405,9 +404,9 @@ transactions, missed opportunities, or even financial losses.
 
 Contract behavior, and thus transaction results, depends upon three things:
 
-* the contract's code
-* the message's contents and attached value
-* the state of the data store when the contract is executed
+- the contract's code
+- the message's contents and attached value
+- the state of the data store when the contract is executed
 
 The code is fixed, public, and can generally be analyzed ahead of time. The
 message contents and value are entirely controlled by the sending client. But
@@ -415,7 +414,7 @@ the data store depends upon what other contracts have been executed recently.
 
 This implies a race condition: between the time the client examines the stored
 state of the contract they want to invoke, and the time their transaction is
-accepted by a miner, other messages could be applied that change the state. 
+accepted by a miner, other messages could be applied that change the state.
 This classic TOCTTOU (Time Of Check To Time Of Use) race is a constant source of
 bugs in threaded programs.
 
@@ -458,7 +457,7 @@ However, an exactly-predicted system would be completely unusable for more than
 a few clients. Large distributed systems do not deliver the state of the world
 to all clients at the same time: everyone is slightly behind. Almost all clients
 would find their test-and-set messages were constantly being rejected for an
-out-of-date test vector. By demanding that the *entire* state is matched, the
+out-of-date test vector. By demanding that the _entire_ state is matched, the
 system would be sensitive to the slightest of races, and most of these
 transactions would never be applied.
 
@@ -569,25 +568,24 @@ same reward to any miner.
 Clients might, for some reason, want to give preferential treatment to some
 miners over the others. They could do this in several ways:
 
-* include a `send()` to COINBASE if and only it equals a predetermined value
-* clients could reveal a function output to their favorite miners, allowing the
-miner to bypass the computation while pocketing all the gas (e.g. reveal a hash
-preimage, for a program which does an exhaustive search). Everyone else would
-have to burn more CPU to run the full program, but the favorite miner gets a
-shortcut.
+- include a `send()` to COINBASE if and only it equals a predetermined value
+- clients could reveal a function output to their favorite miners, allowing the
+  miner to bypass the computation while pocketing all the gas (e.g. reveal a hash
+  preimage, for a program which does an exhaustive search). Everyone else would
+  have to burn more CPU to run the full program, but the favorite miner gets a
+  shortcut.
 
 We expect that this is unavoidable: clients will always have a way to induce
 non-uniform costs among competing miners. We are uncertain, but doubtful, that
 this could be used for mischief.
 
-
-## <a name="reconciling"></a>   Reconciling Goals
+## <a name="reconciling"></a> Reconciling Goals
 
 So the goals for our different parties are:
 
-* System: stability, incentivized miners, confident clients
-* Miners: predictable profits, protection from resource consumption attacks
-* Clients: predictable transaction results and gas usage, availability
+- System: stability, incentivized miners, confident clients
+- Miners: predictable profits, protection from resource consumption attacks
+- Clients: predictable transaction results and gas usage, availability
 
 A totally-ordered exact-state test-and-set model would yield complete
 predictability. Miners would achieve their goals: both CPU usage and gas income
@@ -602,7 +600,7 @@ predictability for both miners and clients. The unpredictability of client gas
 usage prompts us to include the "refund the unused gas" rule, to establish an
 upper limit on client costs. But this means that miners income becomes
 unpredictable, `gas_limit` is a frustratingly-useless maximum bound, and the
-only thing providing the desired *minimum* bound is `G_transaction`.
+only thing providing the desired _minimum_ bound is `G_transaction`.
 
 In the beginning, this won't matter much. As with Bitcoin, most miner income
 will come from the block reward, not transaction fees. But over time, if the
@@ -615,7 +613,7 @@ income.
 So in the future, Ethereum may benefit from mechanisms that allow a client to
 make a clear promise of income to the miners. This may take the form of a
 `min_gas` message parameter, which would make no promises about the execution
-runtime, but *would* guarantee a minimum income for the miner. If the potential
+runtime, but _would_ guarantee a minimum income for the miner. If the potential
 CPU cost are low enough, this might provide enough information to allow miners
 to prioritize transactions appropriately.
 
@@ -654,10 +652,9 @@ no program analysis.
 _Recommendation: consider adding a `min_gas` to the message metadata, to provide
 a predictable minimum income_
 
-
 ## Part 2: Transaction Execution and Contract Composition
 
-## <a name="execution"></a>   Overview of Transaction Execution Model
+## <a name="execution"></a> Overview of Transaction Execution Model
 
 The "Yellowpaper" (LaTeX source in https://github.com/ethereum/yellowpaper , and
 compiled PDF at http://gavwood.com/Paper.pdf) is the primary specification for
@@ -713,28 +710,30 @@ simple and cannot be described simply, and while it is possible to build a
 fully-compatible implementation by reading only the formal specification, we
 feel that current and future implementors would be well-served by contributing
 and improving its readability.
+
 # Reworded to concur with the previous statement that it contains everything
+
 needed for a compatible impl.
 
 _Recommendations to improve the specification:_
 
-* Use pseudocode instead of equations
-* Use property-access instead of subscripts (`txn.value` instead of `T sub(v)`)
-* Use multi-character variable names instead of overloaded Greek letters
-* Avoid reusing symbol names in different contexts (formal- vs actual-
-parameters). A given symbol should have the same meaning in all occurrences.
-Related values (such as the gas provided with a message, distinguished from the
-gas provided to execute a specific sub-function) should have related names, like
-`message_gas` vs `execution_gas`.
-* Function names should be unique, and their definitions should be clearly
-marked. Argument lists should be consistent. E.g. section 8 "Message Call"
-invokes upon the Xi function (in equation 99, rev cdc8499), and appears to
-receive four return values. The Xi function is defined (with six return values)
-in equation 109, and again (in terms of an "X" function, with four return
-values) in equation 110. These could be rewritten as pseudocode-style function
-prototypes (`(ret1,ret2) = function X(arg1,arg2)`), and the forward reference
-could be marked with the equation number (or page/section) of the eventual
-definition.
+- Use pseudocode instead of equations
+- Use property-access instead of subscripts (`txn.value` instead of `T sub(v)`)
+- Use multi-character variable names instead of overloaded Greek letters
+- Avoid reusing symbol names in different contexts (formal- vs actual-
+  parameters). A given symbol should have the same meaning in all occurrences.
+  Related values (such as the gas provided with a message, distinguished from the
+  gas provided to execute a specific sub-function) should have related names, like
+  `message_gas` vs `execution_gas`.
+- Function names should be unique, and their definitions should be clearly
+  marked. Argument lists should be consistent. E.g. section 8 "Message Call"
+  invokes upon the Xi function (in equation 99, rev cdc8499), and appears to
+  receive four return values. The Xi function is defined (with six return values)
+  in equation 109, and again (in terms of an "X" function, with four return
+  values) in equation 110. These could be rewritten as pseudocode-style function
+  prototypes (`(ret1,ret2) = function X(arg1,arg2)`), and the forward reference
+  could be marked with the equation number (or page/section) of the eventual
+  definition.
 
 As an example, section 8 "Message Call", (equations 98-99 in revision cdc8499 on
 20-Apr-2015) currently reads:
@@ -782,52 +781,51 @@ def execute(oldstate, gas, owner_address, originator_address, gas_price,
     ...
 ```
 
-* Consider using diagrams to show function inputs and outputs
-* Find a better format for the opcode definition table (appendix H.2), perhaps
-`GAS: () -> (exec.remaining_gas)` or `ADD: (a, b) -> (a+b)` instead of referring
-to `mu prime sub s [0]`
-* Define the gas costs in the opcode table
+- Consider using diagrams to show function inputs and outputs
+- Find a better format for the opcode definition table (appendix H.2), perhaps
+  `GAS: () -> (exec.remaining_gas)` or `ADD: (a, b) -> (a+b)` instead of referring
+  to `mu prime sub s [0]`
+- Define the gas costs in the opcode table
 
 _Recommendation: consider commissioning a dedicated technical writer to produce
 a longer-form specification document, and declare it to be the canonical
 protocol authority._
 
-
 ### Transaction Execution Basics
 
-* **Transactions**: Every update to the blockchain state is initiated by a
-transaction. A transaction must be initiated by a user account with a public key
-(and not by a contract acting on its own), and is signed by the corresponding
-private key. A transaction must indicate a gas price `P` (in units of _ether per
-gas_) and a gas limit `G` (in units of _gas_); at the beginning of transaction
-execution, `P*G` ether units are deducted from the user's account, and `G` gas
-units in total are available for executing the transaction.
-* **Message calls**: A transaction indicates an initial recipient. If the
-recipient is another user account, then no virtual machine execution is needed,
-the account balances are simply updated. However, if the recipient is a
-contract, then code must be executed. When a contract sends a message to another
-contract, a new execution context is pushed onto the call stack. The caller sets
-aside a portion of its available gas to be used by the callee - even if the
-callee crashes, it can use at most this portion; if it uses less than that
-limit, the difference (in gas) is refunded to the caller.
-* **Closing list**: When a contract executes a _close_ (aka `SUICIDE`), its
-address is added to a list. Closed contracts are deleted at the end of
-transaction execution.
-* **Refund counter**: In the case that storage cells are freed (i.e. a zero is
-written to a location that previously had a non-zero value), this counter is
-incremented. When execution is finished, some portion of this counter is
-refunded to the sender. This incentivizes conservation (deallocation) of storage
-space. These "refunds" will not allow a computation to exceed the `gas_limit`,
-nor can they reduce the ETH spent on gas to drop below (or even to) zero.
-* **Exceptions**: While a contract executes a message, there are 4 "Exceptional
-Halting" states: insufficient-gas, bad-opcode, stack-underflow, and
-bad-jumpdest. If one of these occurs, message execution is terminated, all gas
-is given to the miner, and **all remaining message value is left with the
-recipient**. When the message is processed as part of a subroutine, the caller
-can tell that the child contract executed with an exception, but they cannot
-retrieve the funds sent into the child. When the message is being processed due
-to a top-level transaction, the sender must follow the published block chain to
-discover the fate of their message.
+- **Transactions**: Every update to the blockchain state is initiated by a
+  transaction. A transaction must be initiated by a user account with a public key
+  (and not by a contract acting on its own), and is signed by the corresponding
+  private key. A transaction must indicate a gas price `P` (in units of _ether per
+  gas_) and a gas limit `G` (in units of _gas_); at the beginning of transaction
+  execution, `P*G` ether units are deducted from the user's account, and `G` gas
+  units in total are available for executing the transaction.
+- **Message calls**: A transaction indicates an initial recipient. If the
+  recipient is another user account, then no virtual machine execution is needed,
+  the account balances are simply updated. However, if the recipient is a
+  contract, then code must be executed. When a contract sends a message to another
+  contract, a new execution context is pushed onto the call stack. The caller sets
+  aside a portion of its available gas to be used by the callee - even if the
+  callee crashes, it can use at most this portion; if it uses less than that
+  limit, the difference (in gas) is refunded to the caller.
+- **Closing list**: When a contract executes a _close_ (aka `SUICIDE`), its
+  address is added to a list. Closed contracts are deleted at the end of
+  transaction execution.
+- **Refund counter**: In the case that storage cells are freed (i.e. a zero is
+  written to a location that previously had a non-zero value), this counter is
+  incremented. When execution is finished, some portion of this counter is
+  refunded to the sender. This incentivizes conservation (deallocation) of storage
+  space. These "refunds" will not allow a computation to exceed the `gas_limit`,
+  nor can they reduce the ETH spent on gas to drop below (or even to) zero.
+- **Exceptions**: While a contract executes a message, there are 4 "Exceptional
+  Halting" states: insufficient-gas, bad-opcode, stack-underflow, and
+  bad-jumpdest. If one of these occurs, message execution is terminated, all gas
+  is given to the miner, and **all remaining message value is left with the
+  recipient**. When the message is processed as part of a subroutine, the caller
+  can tell that the child contract executed with an exception, but they cannot
+  retrieve the funds sent into the child. When the message is being processed due
+  to a top-level transaction, the sender must follow the published block chain to
+  discover the fate of their message.
 
 _Observation: the yellowpaper seems inconsistent on the issue of
 call-stack-overflow. Equation (113) does not mention the call-stack size, but
@@ -855,7 +853,7 @@ _Evaluation: the "refund counter" mechanism is insufficient to encourage
 deallocation of storage space. This storage pool, which must be tracked by all
 verifiers, forever, represents Ethereum's largest long-term execution cost, and
 it is important to keep it as small as possible. Although complex, a pre-paid
-renewable "rental" model, denomimated in byte*seconds, is more likely to protect
+renewable "rental" model, denomimated in byte\*seconds, is more likely to protect
 against unnecessary growth of the storage pool, and accidental "leaks" of
 storage space to abandoned contracts. A similar mechanism may be warranted to
 expire contracts themselves. Ideally the state vector should only include active
@@ -874,7 +872,7 @@ account where everyone can see.
 
 Then, the project lead will publish a message, outside the blockchain, signed by
 the first account's public key, identifying themselves and describing the
-project goals. This assures donors that they are funding the *right* project, or
+project goals. This assures donors that they are funding the _right_ project, or
 at least a project that claims to do what they want to fund. Later, if the
 project is funded, that person will use the same key to sign a transaction
 message, to spend the funds.
@@ -924,7 +922,6 @@ whitepaper) to use a keyed hash, such as HMAC-SHA256._
 Storage operations may incur much greater actual costs than their assigned gas
 value suggests. Certain pathological sequences can put the storage trie in a
 non-optimal configuration, resulting in worst-cast traversal costs.
-
 
 #### Creating Worst-Case Storage Layout
 
@@ -987,6 +984,7 @@ during a time when the market price of gas is low, or with collusion from a
 miner. If the market gas price later goes up, this stockpile of squatted storage
 can be valuable. Exacerbating this, the verification cost of this squatting
 might be made low if a convention is recognized. Consider this fragment of code:
+
 ```python
   # precondition: self.storage is all 0
   i = 0
@@ -994,6 +992,7 @@ might be made low if a convention is recognized. Consider this fragment of code:
      self.storage[i] = 1
 	 i += 1
 ```
+
 The gas cost, and the change to the state vector after executing this fragment,
 assuming the precondition holds, is always the same for every contract, and thus
 could be executed in constant time by any verifier.
@@ -1082,7 +1081,7 @@ Shifting the responsibility for storage to clients who care about it is useful,
 but the necessary protocol changes may be complex. A complimentary approach is
 to remove the storage altogether. Currently, storage can only be deleted if a
 contract chooses to delete it. Otherwise it lives until the contract
-self-destructs, which is also entirely controlled by the contract. 
+self-destructs, which is also entirely controlled by the contract.
 
 This can easily result in contracts and data which are useless, broken, or
 abandoned, never to be used again, but consuming space in the Merkle tree and
@@ -1102,7 +1101,6 @@ regular basis. A more sophisticated scheme could allow accounts (and contracts)
 to pre-specify a "beneficiary" to which its value would go if/when it expires,
 just like a will that disposes of a person's estate when they die.
 
-
 ### Exceptions
 
 Our current understanding of the VM execution model (complicated by divergent
@@ -1110,14 +1108,14 @@ behavior of the pyethereum implementation, errors in the specification, and
 changes to the yellowpaper during review) is that there are exactly four things
 that can cause a program to terminate with an exception:
 
-* insufficient gas
-* bad opcode
-* stack underflow
-* bad jump destination
+- insufficient gas
+- bad opcode
+- stack underflow
+- bad jump destination
 
 When one of these exceptions occur, execution of the current message (top-level
 transaction or CALL operation) is abandoned, all gas is given to the miner, and
-any remaining money is left with the *receiving contract*. All other state is
+any remaining money is left with the _receiving contract_. All other state is
 rewound to the start of the CALL or message delivery. The recipient has no
 memory of the message, except for the mysterious extra ETH in its account, with
 no record of the sender to refund it to. For CALL operations, the caller learns
@@ -1153,7 +1151,6 @@ from the first contract.
 This implies that an explicit "RAISE EXCEPTION" opcode would be useful, perhaps
 using a reserved-as-invalid opcode, and higher-level languages should provide
 access to it (e.g. serpent provides `invalid()`).
-
 
 ### Callstack Depth Limit Errors
 
@@ -1208,8 +1205,7 @@ def call_get_free_money(X):
         raise
 ```
 
-
-## <a name="hazards"></a>   Hazards of Composing Contracts
+## <a name="hazards"></a> Hazards of Composing Contracts
 
 Contracts, which can send messages to each other, represent mutually-distrusting
 parties which nevertheless want to cooperate. The lessons of the
@@ -1236,24 +1232,24 @@ There are useful parallels between this refund loop and the publish-subscribe
 function illustrated in Miller's thesis. He demonstrates several hazards that
 are present when the `publish` callbacks are run synchronously:
 
-* exceptions raised during the callback would prevent execution of later
-callbacks
-* reentrancy hazards if the callback itself executes publish(), subscribe(), or
-unsubscribe(): repeated actions, missing actions, and inconsistent delivery of
-messages
+- exceptions raised during the callback would prevent execution of later
+  callbacks
+- reentrancy hazards if the callback itself executes publish(), subscribe(), or
+  unsubscribe(): repeated actions, missing actions, and inconsistent delivery of
+  messages
 
 Some analogous issues in the crowdfund example are:
 
-* delivering a contribution, after the funding deadline, with just enough gas to
-allow some refunds to go through, but not all: the contract could be left in a
-state where it was unable to refund the remaining contributions
-* if the refund was triggered by a contract at the end of a long call stack, the
-`send` instructions will fail. However the example appears to ignore the return
-value of the `send`, so execution will continue. All records will be cleared,
-and the funds can never be recovered.
-* the refund callback could make a new donation, triggering another refund
-cycle, potentially double-refunding the earlier contributions, or failing to
-refund later ones
+- delivering a contribution, after the funding deadline, with just enough gas to
+  allow some refunds to go through, but not all: the contract could be left in a
+  state where it was unable to refund the remaining contributions
+- if the refund was triggered by a contract at the end of a long call stack, the
+  `send` instructions will fail. However the example appears to ignore the return
+  value of the `send`, so execution will continue. All records will be cleared,
+  and the funds can never be recovered.
+- the refund callback could make a new donation, triggering another refund
+  cycle, potentially double-refunding the earlier contributions, or failing to
+  refund later ones
 
 It is usually possible to protect against these hazards with careful state
 management, and the crowdfunding example does a pretty good job. But this is
@@ -1265,7 +1261,7 @@ challenges.
 
 The object-capability community addresses this class of hazards by using the
 "eventual-send" operation whenever possible, which queues the message for
-delivery *after* the current function has run to completion. By disassociating
+delivery _after_ the current function has run to completion. By disassociating
 the call stacks of caller and callee, the cross-object control flow becomes
 predictable, and independent of the behavior of the callee.
 
@@ -1280,7 +1276,6 @@ habits.
 _Recommendation: provide many more examples of thorough defensive contract
 programming._
 
-
 ### Static Analysis and Conventions
 
 We anticipate a market need for static-analysis tools, to protect users from
@@ -1294,7 +1289,7 @@ exceed the call depth limit.
 
 As the contract language is Turing-complete, this analysis is necessarily
 incomplete: there are an infinite number of programs for which the tool will
-output "cannot analyze". However, many useful programs *can* be analyzed in this
+output "cannot analyze". However, many useful programs _can_ be analyzed in this
 fashion, and callers should prefer to use analyzable ones.
 
 It may be possible to add annotations to the (high-level) source code to
@@ -1309,7 +1304,7 @@ The analysis may result in a maximum bound on the gas consumed, rather than an
 exact figure, when behavior depends upon message inputs or current state. The
 tool could be given this data to improve the precision of the analysis ("if I
 were to send message XYZ to contract ABC, what's the worst-case gas
-consumption?", as opposed to "if I sent *any* message to ABC, what will
+consumption?", as opposed to "if I sent _any_ message to ABC, what will
 happen?").
 
 Contract composition would be facilitated with an analysis tool. Contract
@@ -1317,40 +1312,39 @@ authors could run this tool to confirm they are publishing predictable contrcts
 for others to use. Message senders can use it to make sure they're providing
 enough gas with their transactions.
 
-
-## <a name="missing"></a>   Missing Features
+## <a name="missing"></a> Missing Features
 
 The Ethereum execution model is missing a few features that would improve the
 expressivity and functionality of the system. We believe these features will
 require careful consideration, as they are not without risks, but expect they
 will prove to be useful in the future.
 
-* Timers / cronjobs: a contract could pay to have a message delivered at some
-point in the future, perhaps to itself. This would require an authenticated data
-structure with all pending timed messages, so everyone could agree when they
-must be executed. The current system requires an external party to trigger all
-actions.
+- Timers / cronjobs: a contract could pay to have a message delivered at some
+  point in the future, perhaps to itself. This would require an authenticated data
+  structure with all pending timed messages, so everyone could agree when they
+  must be executed. The current system requires an external party to trigger all
+  actions.
 
-* Eventual-send: like a zero-delay timer: the message is sent immediately
-following the completion of the current contract. This allows all synchronous
-execution to finish, removing reentrancy hazards from the execution model. It
-would also allow activity to span multiple blocks. In the objcap world, results
-are returned via objects called "Promises": these would look very different in
-the Ethereum environment.
+- Eventual-send: like a zero-delay timer: the message is sent immediately
+  following the completion of the current contract. This allows all synchronous
+  execution to finish, removing reentrancy hazards from the execution model. It
+  would also allow activity to span multiple blocks. In the objcap world, results
+  are returned via objects called "Promises": these would look very different in
+  the Ethereum environment.
 
-* Well-defined ordering for queued messages: it should be possbile to send two
-messages to two different contracts and ensure that they will execute in a
-specific order. At present, this order can only be enforced when sending two
-messages from the same sender.
+- Well-defined ordering for queued messages: it should be possbile to send two
+  messages to two different contracts and ensure that they will execute in a
+  specific order. At present, this order can only be enforced when sending two
+  messages from the same sender.
 
-* Allow contracts to pay for their own gas.
+- Allow contracts to pay for their own gas.
 
 ### Self-Fueled Contracts
 
 This last feature deserves more consideration. In the current design, all
 activity (contract execution) must be triggered by a non-contract "simple"
 account sending a message of some sort. This initial message, sent from outside
-the miners (using knowledge of a secret signing key), provides the gas for *all*
+the miners (using knowledge of a secret signing key), provides the gas for _all_
 the contract execution that results. The system is somewhat like a mechanical
 calculator (think Babbage's Difference Engine): it must be cranked from the
 outside, and when the human stops turning the wheel, all motion stops.
@@ -1385,7 +1379,7 @@ amount of gas, independent of how much the donor's contracts required
 themselves.
 
 This would work even better (more efficient for the donors) if the unused gas
-could be directed to the *receiver*, rather than the *sender*.
+could be directed to the _receiver_, rather than the _sender_.
 
 This feature would also allow contracts to pick up additional gas after
 execution starts. The caller could provide just enough to let the contract get
@@ -1398,32 +1392,32 @@ the computation will take.
 
 There are multiple challenges with this feature:
 
-* The gas-must-come-from-outside property is probably an important safety
-feature. It may prevent runaway contracts that spew messages uncontrollably.
+- The gas-must-come-from-outside property is probably an important safety
+  feature. It may prevent runaway contracts that spew messages uncontrollably.
 
-* Miners want assurance that their CPU costs will be paid. Gas that comes from a
-contract's balance may depend upon that contract execution not being rewound
-after an exception. Contracts could be arranged in such a way that miners were
-unable to recoup their expenses. This would open up a DoS vector that gas is
-supposed to prevent. It may be necessary to introduce a new checkpointing
-mechanism to protect miners: there must be a point where reliable funds have
-been transferred to the miner, that occurs *before* gas-limited computation is
-performed.
+- Miners want assurance that their CPU costs will be paid. Gas that comes from a
+  contract's balance may depend upon that contract execution not being rewound
+  after an exception. Contracts could be arranged in such a way that miners were
+  unable to recoup their expenses. This would open up a DoS vector that gas is
+  supposed to prevent. It may be necessary to introduce a new checkpointing
+  mechanism to protect miners: there must be a point where reliable funds have
+  been transferred to the miner, that occurs _before_ gas-limited computation is
+  performed.
 
-* Deciding upon a `gas_price` is non-trivial. Normal (human) senders choose this
-according to prevailing market price for a given speed of execution. Contracts
-may not have enough information to select a competitive price.
+- Deciding upon a `gas_price` is non-trivial. Normal (human) senders choose this
+  according to prevailing market price for a given speed of execution. Contracts
+  may not have enough information to select a competitive price.
 
-* There are new error conditions to deal with: in the crowdfunding example, what
-should it do when an attempt to refund a donation fails from insufficient gas?
-Note that this interacts with our recommendation to have exceptions return funds
-to the sender (caller), rather than leaving them with the receiver (callee). If
-the receiver keeps the funds, then a failed refund execution still leaves the
-money in the hands of the donor (although their contract may not realize it). If
-the sender keeps the funds, then a failure leaves the money with the
-crowdfunding contract (which might be smart enough to try again later, with more
-gas, or might forget that it still needs to be refunded). Return-to-sender does
-at least give the sender the chance to fix things.
+- There are new error conditions to deal with: in the crowdfunding example, what
+  should it do when an attempt to refund a donation fails from insufficient gas?
+  Note that this interacts with our recommendation to have exceptions return funds
+  to the sender (caller), rather than leaving them with the receiver (callee). If
+  the receiver keeps the funds, then a failed refund execution still leaves the
+  money in the hands of the donor (although their contract may not realize it). If
+  the sender keeps the funds, then a failure leaves the money with the
+  crowdfunding contract (which might be smart enough to try again later, with more
+  gas, or might forget that it still needs to be refunded). Return-to-sender does
+  at least give the sender the chance to fix things.
 
 #### document source
 
