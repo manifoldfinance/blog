@@ -69,7 +69,7 @@ safe: False
 lsi: False
 username: manifoldfinance
 repo: blog
-branch: master
+branch: trunk
 relative_source: ../blog/
 destination: ../blog-pages/
 production_url: https://manifoldfinance.github.io/blog/
