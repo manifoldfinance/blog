@@ -1,7 +1,6 @@
-# Jekyll configuration
 markdown: kramdown
 highlighter: rouge
-paginate: 100 # it will paginate after this number
+paginate: 100
 language: "en-uk"
 words_per_minute: 200
 
@@ -18,12 +17,12 @@ favicon: assets/images/favicon.png
 CNAME: #add cname for website to be created
 
 # Social info
-navigation: True # show the navbar links
-subscribers: True # you need to connect an external service for this to work,
+navigation: True
+subscribers: True
 # if 'True' the submit button is disabled for now, but you can change that
 # by editing `_includes/subscribe-form.html`
-twitter: foldfinance
-facebook:
+twitter: 'foldfinance'
+facebook: ''
 
 # Disqus
 disqus: False
@@ -46,14 +45,6 @@ plugins: [jekyll-paginate, jekyll-feed]
 
 feed:
   path: feed.xml
-
-# Additional settings available on the front-matter
-# Site logo in the index.html (as in demo.ghost.io)
-# Author's page cover in _layouts/author.html
-# The same for page.html and tag.html layouts
-# Post's page cover as a per-post basis _posts/...
-# Disqus comments as a per-post basis
-# ...
 
 # Settings for building master branch with travis-ci
 # with jekyll-travis
