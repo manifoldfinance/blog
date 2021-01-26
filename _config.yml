@@ -2,7 +2,7 @@
 markdown: kramdown
 highlighter: rouge
 paginate: 100 # it will paginate after this number
-language: 'en-uk'
+language: "en-uk"
 words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
@@ -11,8 +11,8 @@ baseurl: /blog/
 # Website info
 title: Manifold Finance
 description: Research and Essays
-cover: assets/images/blog-cover.jpg
-logo: assets/images/blog-icon.png
+cover: assets/images/hero1.png
+logo: assets/images/favicon.png
 logo_dark: assets/images/favicon.png
 favicon: assets/images/favicon.png
 CNAME: #add cname for website to be created
@@ -22,15 +22,15 @@ navigation: True # show the navbar links
 subscribers: True # you need to connect an external service for this to work,
 # if 'True' the submit button is disabled for now, but you can change that
 # by editing `_includes/subscribe-form.html`
-twitter: tryghost # replace by your username
-facebook: ghost # replace by your username
+twitter: foldfinance
+facebook:
 
 # Disqus
 disqus: False
-disqus_shortname: jekyller # replace with your disqus username
+disqus_shortname:
 
 # Google Analytics
-google_analytics: eplace with your GA tracking identifier
+google_analytics:
 
 # Permalinks
 permalink: /:title
@@ -67,13 +67,13 @@ feed:
 # or "master" otherwise
 safe: False
 lsi: False
-username: jekyller
-repo: jasper2
+username: manifoldfinance
+repo: blog
 branch: master
 relative_source: ../blog/
 destination: ../blog-pages/
-production_url:  https://manifoldfinance.github.io/blog/
-source_url:  https://github.com/manifoldfinance/blog/
+production_url: https://manifoldfinance.github.io/blog/
+source_url: https://github.com/manifoldfinance/blog/
 
 exclude:
   - assets/css
