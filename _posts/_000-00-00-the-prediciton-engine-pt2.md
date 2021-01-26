@@ -1,4 +1,4 @@
-#  Fact-orientation
+# Fact-orientation
 
 People communicate facts, that is the fact is the unit of communication. The fact-oriented approach enables multidimensional categorization.[7]
 
