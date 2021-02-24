@@ -29,7 +29,7 @@ disqus: False
 disqus_shortname:
 
 # Google Analytics
-google_analytics: 'G-066GJ933Y1',
+google_analytics: 'G-066GJ933Y1'
 
 # Permalinks
 permalink: /:title
