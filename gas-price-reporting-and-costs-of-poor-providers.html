@@ -1,0 +1,295 @@
+<h1 id="gas-price-reporting-index">Gas Price Reporting Index</h1>
+
+<blockquote>
+  <p>Collection of All Gas Price Prediction and Reporting Services and their various formats</p>
+</blockquote>
+
+<p>Whereever you may be getting your Ethereum transaction pricing information (A.K.A Gas or Gwei), we guarantee its almost entirely useless.</p>
+
+<p>We would like to introduce a new service endpoint, <a href="http://ercgas.org">ERCGas.org</a> - a statistically accurate and useful real time pricing engine for
+ethereum transactions with a reference transaction utilized as a typical Uniswap trade.</p>
+
+<p>Not only do we provide percentile rankings over the distribution of pricing, we also plan on offering EIP1559 support within the next two weeks so that other developers 
+and users can start testing it out.</p>
+
+<p>Below you will find a small example and a recent result served from the API. After looking at our endpoint continue reading below to see what normally passes for transaction
+cost estimates and reporting. <em>Hint</em> It’s not much.</p>
+
+<h3 id="fee-speed-definitions">Fee Speed Definitions</h3>
+
+<p>Fastest: next block (i.e. &lt;30 seconds) <br />
+Fast: below 2 minutes (&lt;10 blocks)  <br />
+Medium: around 5 minutes (&lt;20 blocks)  <br />
+Slow: below 30 minutes (a.k.a safe-low, &lt;120 blocks)  <br /></p>
+
+<h3 id="new-api-available-ercgasorg">New API Available: ERCGas.org</h3>
+
+<p>Visting <a href="ercgas.org">ercgas.org</a> directly outputs the raw json response. Below is a way to use <code class="highlighter-rouge">jq</code> and get information you would want in one line</p>
+
+<p>An example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> ercgas.org | jq .percentile_75
+</code></pre></div></div>
+<p>resposne:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"325 gwei"</span>
+</code></pre></div></div>
+
+<h3 id="data-format-of-response">Data format of response</h3>
+
+<blockquote>
+  <p>nanoeth is the <strong>SI</strong> nomenclature for <code class="highlighter-rouge">gwei</code>, we utilize <code class="highlighter-rouge">gwei</code> as it is what is used in normal conversations.</p>
+</blockquote>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"number_of_blocks"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"latest_block_number"</span><span class="p">:</span><span class="w"> </span><span class="mi">11911047</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000011001 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000021445 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_3"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_5"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_10"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_15"</span><span class="p">:</span><span class="w"> </span><span class="s2">"152.000001459 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_20"</span><span class="p">:</span><span class="w"> </span><span class="s2">"181.000001459 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_25"</span><span class="p">:</span><span class="w"> </span><span class="s2">"200 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_30"</span><span class="p">:</span><span class="w"> </span><span class="s2">"239 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_35"</span><span class="p">:</span><span class="w"> </span><span class="s2">"261 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_40"</span><span class="p">:</span><span class="w"> </span><span class="s2">"264.000000233 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_45"</span><span class="p">:</span><span class="w"> </span><span class="s2">"270.6 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_50"</span><span class="p">:</span><span class="w"> </span><span class="s2">"283 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_55"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_60"</span><span class="p">:</span><span class="w"> </span><span class="s2">"301 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_65"</span><span class="p">:</span><span class="w"> </span><span class="s2">"305 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_70"</span><span class="p">:</span><span class="w"> </span><span class="s2">"306 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_75"</span><span class="p">:</span><span class="w"> </span><span class="s2">"309 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_80"</span><span class="p">:</span><span class="w"> </span><span class="s2">"330 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_85"</span><span class="p">:</span><span class="w"> </span><span class="s2">"350 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_90"</span><span class="p">:</span><span class="w"> </span><span class="s2">"366 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_95"</span><span class="p">:</span><span class="w"> </span><span class="s2">"367.2 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_96"</span><span class="p">:</span><span class="w"> </span><span class="s2">"368 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_97"</span><span class="p">:</span><span class="w"> </span><span class="s2">"368.000001459 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_98"</span><span class="p">:</span><span class="w"> </span><span class="s2">"370 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_99"</span><span class="p">:</span><span class="w"> </span><span class="s2">"376 gwei"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"percentile_100"</span><span class="p">:</span><span class="w"> </span><span class="s2">"403 gwei"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="catalog">Catalog</h2>
+
+<ul>
+  <li><a href="#gas-price-reporting-index">Gas Price Reporting Index</a>
+    <ul>
+      <li><a href="#fee-speed-definitions">Fee Speed Definitions</a></li>
+      <li><a href="#gaswatch">gaswatch</a></li>
+      <li><a href="#gnosis">gnosis</a></li>
+      <li><a href="#metamask----consensys-codefi">MetaMask  / Consensys CoDeFi</a></li>
+      <li><a href="#ethgasstation">ethGasStation</a></li>
+      <li><a href="#etherchainorg">etherchain.org</a></li>
+      <li><a href="#poanetwork">poanetwork</a></li>
+      <li><a href="#zoltu">Zoltu</a></li>
+      <li><a href="#mycrypto">MyCrypto</a></li>
+      <li><a href="#etherscan">EtherScan</a></li>
+      <li><a href="#url-index">URL Index</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="gaswatch">gaswatch</h3>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"code"</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span><span class="s2">"data"</span><span class="p">:{</span><span class="s2">"rapid"</span><span class="p">:</span><span class="mi">131000000000</span><span class="p">,</span><span class="s2">"fast"</span><span class="p">:</span><span class="mi">116000000000</span><span class="p">,</span><span class="s2">"standard"</span><span class="p">:</span><span class="mi">100000000000</span><span class="p">,</span><span class="s2">"slow"</span><span class="p">:</span><span class="mi">91600000000</span><span class="p">,</span><span class="s2">"timestamp"</span><span class="p">:</span><span class="mi">1613914581546</span><span class="p">}}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="gnosis">gnosis</h3>
+
+<p><a href="https://safe-relay.gnosis.io/api/v1/gas-station/">endpoint url</a></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"lastUpdate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-21T13:38:38.945308Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lowest"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"safeLow"</span><span class="p">:</span><span class="w"> </span><span class="s2">"109000000001"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"standard"</span><span class="p">:</span><span class="w"> </span><span class="s2">"119000000001"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"fast"</span><span class="p">:</span><span class="w"> </span><span class="s2">"131000000001"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"fastest"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10680081443136"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="metamask---consensys-codefi">MetaMask  / Consensys CoDeFi</h3>
+
+<p><a href="https://api.metaswap.codefi.network/gasPrices">endpoint url</a></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"SafeGasPrice"</span><span class="p">:</span><span class="s2">"100"</span><span class="p">,</span><span class="s2">"ProposeGasPrice"</span><span class="p">:</span><span class="s2">"108"</span><span class="p">,</span><span class="s2">"FastGasPrice"</span><span class="p">:</span><span class="s2">"119"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"SafeGasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ProposeGasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"108"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"FastGasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"119"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="ethgasstation">ethGasStation</h3>
+
+<p><a href="https://ethgasstation.info/json/ethgasAPI.json">endpoint url</a></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"fast"</span><span class="p">:</span><span class="w"> </span><span class="mf">1200.0</span><span class="p">,</span><span class="w"> </span><span class="s2">"fastest"</span><span class="p">:</span><span class="w"> </span><span class="mf">1200.0</span><span class="p">,</span><span class="w"> </span><span class="s2">"safeLow"</span><span class="p">:</span><span class="w"> </span><span class="mf">1020.0</span><span class="p">,</span><span class="w"> </span><span class="s2">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">1050.0</span><span class="p">,</span><span class="w"> </span><span class="s2">"block_time"</span><span class="p">:</span><span class="w"> </span><span class="mf">13.327868852459016</span><span class="p">,</span><span class="w"> </span><span class="s2">"blockNum"</span><span class="p">:</span><span class="w"> </span><span class="mi">11900622</span><span class="p">,</span><span class="w"> </span><span class="s2">"speed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.997822721438169</span><span class="p">,</span><span class="w"> </span><span class="s2">"safeLowWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">12.9</span><span class="p">,</span><span class="w"> </span><span class="s2">"avgWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"fastWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"fastestWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"gasPriceRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"1200"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"1180"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"1160"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span><span class="w"> </span><span class="s2">"1140"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span><span class="w"> </span><span class="s2">"1120"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span><span class="w"> </span><span class="s2">"1100"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span><span class="w"> </span><span class="s2">"1080"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.2</span><span class="p">,</span><span class="w"> </span><span class="s2">"1060"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"1040"</span><span class="p">:</span><span class="w"> </span><span class="mf">11.5</span><span class="p">,</span><span class="w"> </span><span class="s2">"1020"</span><span class="p">:</span><span class="w"> </span><span class="mf">12.9</span><span class="p">,</span><span class="w"> </span><span class="s2">"1000"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.3</span><span class="p">,</span><span class="w"> </span><span class="s2">"980"</span><span class="p">:</span><span class="w"> </span><span class="mf">17.4</span><span class="p">,</span><span class="w"> </span><span class="s2">"960"</span><span class="p">:</span><span class="w"> </span><span class="mf">18.9</span><span class="p">,</span><span class="w"> </span><span class="s2">"940"</span><span class="p">:</span><span class="w"> </span><span class="mf">21.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"920"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"900"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"880"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"860"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"840"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"820"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"800"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"780"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"760"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"740"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"720"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"700"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"680"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"660"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"640"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"620"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"600"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"580"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"560"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"540"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"520"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"500"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"480"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"460"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"440"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"420"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"400"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"380"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"360"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"340"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"320"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"300"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"280"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"260"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"240"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"220"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"200"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"190"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"180"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"170"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"160"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"150"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"140"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"130"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"120"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"110"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"100"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"90"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"80"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"70"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"60"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"50"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"40"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"30"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"20"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"10"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"8"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"6"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w"> </span><span class="s2">"1050"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">}}</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"fast"</span><span class="p">:</span><span class="w"> </span><span class="mf">1200.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fastest"</span><span class="p">:</span><span class="w"> </span><span class="mf">1200.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"safeLow"</span><span class="p">:</span><span class="w"> </span><span class="mf">1020.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">1050.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"block_time"</span><span class="p">:</span><span class="w"> </span><span class="mf">13.327868852459016</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"blockNum"</span><span class="p">:</span><span class="w"> </span><span class="mi">11900622</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"speed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.997822721438169</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"safeLowWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">12.9</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"avgWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fastWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fastestWait"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gasPriceRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"1200"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1180"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1160"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1140"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1120"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1100"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1080"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1060"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1040"</span><span class="p">:</span><span class="w"> </span><span class="mf">11.5</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1020"</span><span class="p">:</span><span class="w"> </span><span class="mf">12.9</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1000"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"980"</span><span class="p">:</span><span class="w"> </span><span class="mf">17.4</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"960"</span><span class="p">:</span><span class="w"> </span><span class="mf">18.9</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"940"</span><span class="p">:</span><span class="w"> </span><span class="mf">21.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"920"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"900"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"880"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"860"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"840"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"820"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"800"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"780"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"760"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"740"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"720"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"700"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"680"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"660"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"640"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"620"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"600"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"580"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"560"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"540"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"520"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"500"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"480"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"460"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"440"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"420"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"400"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"380"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"360"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"340"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"320"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"300"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"280"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"260"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"240"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"220"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"200"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"190"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"180"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"170"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"160"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"150"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"140"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"130"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"120"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"110"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"100"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"90"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"80"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"70"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"60"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"50"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"40"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"30"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"20"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"10"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"8"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"6"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="mf">222.1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1050"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="etherchainorg">etherchain.org</h3>
+
+<p><a href="https://www.etherchain.org/api/gasPriceOracle">endpoint url</a></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"safeLow"</span><span class="p">:</span><span class="mi">102</span><span class="p">,</span><span class="s2">"standard"</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="s2">"fast"</span><span class="p">:</span><span class="mf">114.6</span><span class="p">,</span><span class="s2">"fastest"</span><span class="p">:</span><span class="mi">120</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="poanetwork">poanetwork</h3>
+
+<p><a href="https://gasprice.poa.network/">endpoint url</a></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"health"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="s2">"block_number"</span><span class="p">:</span><span class="mi">11900628</span><span class="p">,</span><span class="s2">"slow"</span><span class="p">:</span><span class="mf">101.0</span><span class="p">,</span><span class="s2">"standard"</span><span class="p">:</span><span class="mf">107.0</span><span class="p">,</span><span class="s2">"fast"</span><span class="p">:</span><span class="mf">115.0</span><span class="p">,</span><span class="s2">"instant"</span><span class="p">:</span><span class="mf">130.8</span><span class="p">,</span><span class="s2">"block_time"</span><span class="p">:</span><span class="mf">13.191</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"health"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"block_number"</span><span class="p">:</span><span class="w"> </span><span class="mi">11900628</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"slow"</span><span class="p">:</span><span class="w"> </span><span class="mf">101.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"standard"</span><span class="p">:</span><span class="w"> </span><span class="mf">107.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fast"</span><span class="p">:</span><span class="w"> </span><span class="mf">115.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"instant"</span><span class="p">:</span><span class="w"> </span><span class="mf">130.8</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"block_time"</span><span class="p">:</span><span class="w"> </span><span class="mf">13.191</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="mycrypto">MyCrypto</h3>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"safeLow"</span><span class="p">:</span><span class="mi">159</span><span class="p">,</span><span class="s2">"standard"</span><span class="p">:</span><span class="mi">184</span><span class="p">,</span><span class="s2">"fast"</span><span class="p">:</span><span class="mi">262</span><span class="p">,</span><span class="s2">"fastest"</span><span class="p">:</span><span class="mi">289</span><span class="p">,</span><span class="s2">"blockNum"</span><span class="p">:</span><span class="mi">11907235</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"safeLow"</span><span class="p">:</span><span class="w"> </span><span class="mi">159</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"standard"</span><span class="p">:</span><span class="w"> </span><span class="mi">184</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fast"</span><span class="p">:</span><span class="w"> </span><span class="mi">262</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fastest"</span><span class="p">:</span><span class="w"> </span><span class="mi">289</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"blockNum"</span><span class="p">:</span><span class="w"> </span><span class="mi">11907235</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="etherscan">EtherScan</h3>
+
+<p><a href="https://api.etherscan.io/api?module=gastracker&amp;action=gasoracle&amp;apikey=${YOUR_API_KEY}">api endpoint <em>key required</em></a></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"OK"</span><span class="p">,</span><span class="s2">"result"</span><span class="p">:{</span><span class="s2">"LastBlock"</span><span class="p">:</span><span class="s2">"11907242"</span><span class="p">,</span><span class="s2">"SafeGasPrice"</span><span class="p">:</span><span class="s2">"248"</span><span class="p">,</span><span class="s2">"ProposeGasPrice"</span><span class="p">:</span><span class="s2">"269"</span><span class="p">,</span><span class="s2">"FastGasPrice"</span><span class="p">:</span><span class="s2">"294"</span><span class="p">}}</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"LastBlock"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11907242"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"SafeGasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"248"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"ProposeGasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"269"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"FastGasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"294"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="url-index">URL Index</h2>
+
+<p>Current offchain list:</p>
+
+<ul>
+  <li>https://ethgasstation.info/json/ethgasAPI.json</li>
+  <li>https://www.etherchain.org/api/gasPriceOracle</li>
+  <li>https://gasprice.poa.network/</li>
+  <li>https://www.gasnow.org/api/v3/gas/price</li>
+</ul>

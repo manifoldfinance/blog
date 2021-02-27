@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator>
+  <link href="/blog/tag/applied-engineeering/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="/blog/" rel="alternate" type="text/html" />
+  <updated>2021-02-27T17:17:39+00:00</updated>
+  <id>/blog/tag/applied-engineeering/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Manifold Finance | </title>
+  
+
+  
+    <subtitle>Research and Essays</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">The Indifference Engine, part one</title>
+      <link href="/blog/the-indifference-engine" rel="alternate" type="text/html" title="The Indifference Engine, part one" />
+      <published>2021-01-25T19:00:00+00:00</published>
+      <updated>2021-01-25T19:00:00+00:00</updated>
+      <id>/blog/the-indifference-engine</id>
+      <content type="html" xml:base="/blog/the-indifference-engine">&lt;h1 id=&quot;the-indifference-engine-building-functional-transactional-tracing-at-scale&quot;&gt;The Indifference Engine: Building Functional Transactional Tracing at Scale&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#the-indifference-engine-building-functional-transactional-tracing-at-scale&quot;&gt;The Indifference Engine: Building Functional Transactional Tracing at Scale&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#overview&quot;&gt;Overview&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#smart-contract-disclaimer--devops&quot;&gt;Smart Contract Disclaimer &amp;amp; DevOps&lt;/a&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#fail-safe-mechanism&quot;&gt;Fail Safe Mechanism&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#monitoring&quot;&gt;Monitoring&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href=&quot;#active-monitoring&quot;&gt;Active Monitoring&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#the-problem-with-logging-today&quot;&gt;The Problem with Logging today&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#why-the-focus&quot;&gt;Why the focus?&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href=&quot;#contravriant-functors&quot;&gt;Contravriant Functors&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#a-modest-proposal-for-logging&quot;&gt;A Modest Proposal for logging&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href=&quot;#aggregating-tracers&quot;&gt;Aggregating Tracers&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#tracers&quot;&gt;Tracers&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;This article is broken into two distinct sections:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Operational Procedures and defining system expectations&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Application of cutting edge engineering techniques in eliminating issues taken at face value typically.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The information in this article is sourced from IOHK (Cardano) and Well Typed.&lt;/p&gt;
+
+&lt;p&gt;IOHK’s application of these theories can be found &lt;a href=&quot;https://github.com/input-output-hk/iohk-monitoring-framework&quot;&gt;in their devops framework, available on github.&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;smart-contract-disclaimer--devops&quot;&gt;Smart Contract Disclaimer &amp;amp; DevOps&lt;/h2&gt;
+
+&lt;h4 id=&quot;fail-safe-mechanism&quot;&gt;Fail Safe Mechanism&lt;/h4&gt;
+
+&lt;p&gt;Smart contracts may not include appropriate or sufficient backup/failover mechanisms in case something goes awry.&lt;/p&gt;
+
+&lt;p&gt;Smart contracts may depend on other systems to fulfill contract terms. These other systems may have vulnerabilities that could prevent the smart contract from functioning as intended.&lt;/p&gt;
+
+&lt;p&gt;Some smart contract platforms may be missing critical system safeguards and customer protections.&lt;/p&gt;
+
+&lt;p&gt;Where smart contracts are linked to a blockchain, forks in the chain could create operational problems.&lt;/p&gt;
+
+&lt;p&gt;In case of an operational failure, recourse may be limited or non-existent — complete loss of a virtual asset is possible.&lt;/p&gt;
+
+&lt;h4 id=&quot;monitoring&quot;&gt;Monitoring&lt;/h4&gt;
+
+&lt;p&gt;** We monitor **&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Governance.
+Smart contracts may require attention, action, and possible revision subject to appropriate governance and liability mechanisms.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Application State
+Low Level Monitoring of Deployed Contracts&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Suspicious Activity
+Failsafe mechanism to return to us in case of attack or error&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Application Performance&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;on-chain throughput (e.g. gas griefing attacks? sandwiching?, etc.)&lt;/li&gt;
+      &lt;li&gt;frontend services (e.g. web application interface)&lt;/li&gt;
+      &lt;li&gt;backend services (e.g. data endpoints for 3rd parties, etc)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;active-monitoring&quot;&gt;Active Monitoring&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Smart Contract Monitoring:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Actively monitor one (or more) Ethereum smart contracts and user accounts (or any combination) watching for odd or “known-dangerous” transactional patterns. Report to anomalies to a list of email, SMS, web site, or individuals whenever something of interest happens.
+End Users: Smart contract developers, smart contract participants (i.e. token holders)
+Notes: “Weird” things include recursive attacks, violations of invariants (token balances to ether balance), largest purchases, most active trader accounts, etc.; Could potentially spawn an “insured” smart contract industry expectation.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Smart Contract Reporting:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;“Quarterly” reports may be available. On-demand reports generated for margin accounts, activity (report on token holders), individual ether holdings and transaction histories (i.e. bank statements) on a per-account, per-contract-group, by industry, or system wide.
+End Users: Smart contract developers, smart contract participants (i.e. token holders), economists, regulators.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;NOTE&lt;/em&gt;: Allows for self-reporting on business processes, expenditures, and revenue from outside an organization—​no need to wait for company reports; marketing efforts might engender an expectation that every smart contract’s accounting is fully transparent.
+Auditing Support:&lt;/p&gt;
+
+&lt;p&gt;Provide data and transactional information to third parties not associated with the development team of a smart contract system. Interesting to potential investors, industry analysts, auditors and/or regulators.&lt;/p&gt;
+
+&lt;p&gt;End Users: regulators, auditors, potential investors
+&lt;em&gt;NOTE&lt;/em&gt;: Fully parsed data makes for much easier auditing of smart contracts, could expose non-delivery of promised behavior.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-problem-with-logging-today&quot;&gt;The Problem with Logging today&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Too Much Overhead,&lt;/li&gt;
+  &lt;li&gt;Too much decided ‘away’ from the site&lt;/li&gt;
+  &lt;li&gt;plainly ment for ‘‘blamestorming’&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A new approach based on contravariant functors, that avoids cluttering the code, has a simple general interface that minimizes concrete dependencies and still allows a choice of logging backend.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Duncan Coutts - Contravariant Logging: How to add logging without getting grumpy&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;why-the-focus&quot;&gt;Why the focus?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Operational complexity reduced&lt;/li&gt;
+  &lt;li&gt;Operational overhead reduced&lt;/li&gt;
+  &lt;li&gt;Massive reduction in computing resources&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Faster response time to incidents&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;It stands to reason at least an order of magnitude difference in capability.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;contravriant-functors&quot;&gt;Contravriant Functors&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ways of achieving this capability in existing code with existing logging service (we use greylog2)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Augment via Closure&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Augment via Results&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;a-modest-proposal-for-logging&quot;&gt;A Modest Proposal for logging&lt;/h3&gt;
+
+&lt;p&gt;Trace typed values only&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;no log names&lt;/li&gt;
+  &lt;li&gt;no severity&lt;/li&gt;
+  &lt;li&gt;no string messages&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A mechanism for transforming traced values&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;allows adding context&lt;/li&gt;
+  &lt;li&gt;convert from application types to logging types&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Minimalist&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;just a (tiny) interface&lt;/li&gt;
+  &lt;li&gt;no extra dependencies in application code&lt;/li&gt;
+  &lt;li&gt;can be instantiated with any logging backend&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Example&lt;/p&gt;
+
+  &lt;p&gt;From Data.Functor.Contravariant in base
+class Contravariant $(f: * \rightarrow *)$ where contramap $::(a \rightarrow b) \rightarrow f b \rightarrow f a$
+Like fmap on Functor but the “other way around”
+class Functor $(f:: * \rightarrow *)$ where fmap $::(a \rightarrow b) \rightarrow f a \rightarrow f b$
+Easy way to remember:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fmap transforms the output&lt;/li&gt;
+  &lt;li&gt;contramap transforms the input&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Another example&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-haskell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sequence&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addNewFetchRequest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;contramap&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;TraceLabelPeer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;peer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clientStateTracer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockFetchSize&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gsvs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateVars&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Right&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;peer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;leftarrow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;decisions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The per-peer action does not need to know which peer id.
+For tracing we want to know which peer it concerns, so we use
+contramap (TraceLabelPeer peer) clientStateTracer
+starting from outer tracer of type Tracer m (TraceLabelPeer peer (TraceFetchClientState header))
+giving us the inner tracer of type
+Tracer m (TraceFetchClientState header)&lt;/p&gt;
+
+&lt;h4 id=&quot;aggregating-tracers&quot;&gt;Aggregating Tracers&lt;/h4&gt;
+
+&lt;p&gt;With many subsystems, we have many typed tracers
+Aggregate using records&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;| All tracers of a node bundled together data Tracers remotePeer localPeer blk $m =$ Tracers {chainSyncClientTracer
+:: Tracer $m$ (TraceChainSyncClientEvent chainSyncServerHeaderTracer :: Tracer m (TraceChainSyncServerEvent chainSyncServerBlockTracer $\quad::$ Tracer $m$ (TraceChainSyncServerEvent
+mempoolTracer
+$\because$ Tracer $m$ (TraceEventMempool blk) forgeTracer
+$\because$ Tracer $m$ (TraceForgeEvent blk) }&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;tracers&quot;&gt;Tracers&lt;/h3&gt;
+
+&lt;p&gt;This style makes it relatively easy (and efficient) to turn tracers on/off&lt;/p&gt;
+
+&lt;p&gt;Pick your favorite logging backend
+Make a top level Tracer to emit items to the logging backend
+Tracer IO (Katip.Item a)&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Katip is a structured logging framework for Haskell.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Define functions to transform the traced values into log items&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;near the component top level so all context is known&lt;/li&gt;
+  &lt;li&gt;select/filter what is needed&lt;/li&gt;
+  &lt;li&gt;can turn tracers on/off&lt;/li&gt;
+  &lt;li&gt;can depend on verbosity&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>sambacha</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="Applied Engineeering" />
+      
+
+      
+        <summary type="html">The Indifference Engine: Building Functional Transactional Tracing at Scale</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

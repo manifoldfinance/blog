@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+>
+	<channel>
+		<title> - Miscellaneous</title>
+		<description>Posts categorized as 'miscellaneous'</description>
+		<sy:updatePeriod>daily</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+		<link></link>
+		<atom:link href="/feed.catagory.xml" rel="self" type="application/rss+xml" />
+		<lastBuildDate></lastBuildDate>
+		
+		
+	</channel>
+</rss>

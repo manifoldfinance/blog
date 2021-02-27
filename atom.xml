@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title> - Articles</title>
+    <description>Research and Essays</description>
+    <link>
+    </link>
+    
+      
+      <item>
+        <title>Gas Price Reporting And Costs Of Poor Providers</title>
+        
+          <description>&lt;h1 id=&quot;gas-price-reporting-index&quot;&gt;Gas Price Reporting Index&lt;/h1&gt;
+
+</description>
+        
+        <pubDate>Mon, 22 Feb 2021 00:00:00 +0000</pubDate>
+        <link>
+        /gas-price-reporting-and-costs-of-poor-providers</link>
+        <guid isPermaLink="true">/gas-price-reporting-and-costs-of-poor-providers</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>The Indifference Engine, part one</title>
+        
+          <description>&lt;h1 id=&quot;the-indifference-engine-building-functional-transactional-tracing-at-scale&quot;&gt;The Indifference Engine: Building Functional Transactional Tracing at Scale&lt;/h1&gt;
+
+</description>
+        
+        <pubDate>Mon, 25 Jan 2021 19:00:00 +0000</pubDate>
+        <link>
+        /the-indifference-engine</link>
+        <guid isPermaLink="true">/the-indifference-engine</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Welcome to Ghost</title>
+        
+          <description>&lt;p&gt;Hey! Welcome to Ghost, it’s great to have you :)&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 27 Jul 2017 10:00:00 +0000</pubDate>
+        <link>
+        /welcome</link>
+        <guid isPermaLink="true">/welcome</guid>
+      </item>
+      
+    
+  </channel>
+</rss>
